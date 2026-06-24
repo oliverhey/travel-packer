@@ -12,223 +12,170 @@
 <title>Travel Packer</title>
 <style>
 :root {
-  --bg: #f2f2f7;
-  --card: #ffffff;
+  --bg: #f2f2f7; --card: #ffffff;
   --sep: rgba(60,60,67,0.18);
-  --text: #000000;
-  --text2: rgba(60,60,67,0.6);
-  --text3: rgba(60,60,67,0.3);
-  --blue: #007aff;
-  --green: #34c759;
+  --text: #000; --text2: rgba(60,60,67,0.6); --text3: rgba(60,60,67,0.3);
+  --blue: #007aff; --green: #34c759; --red: #ff3b30;
   --safe-top: env(safe-area-inset-top, 44px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --c-essentials:  #007aff;
-  --c-clothing:    #34c759;
-  --c-footwear:    #ff9500;
-  --c-toiletries:  #5ac8fa;
-  --c-tech:        #af52de;
-  --c-work:        #ff3b30;
-  --c-gym:         #ff2d55;
-  --c-swim:        #32ade6;
-  --c-extras:      #8e8e93;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { height: 100%; }
-body {
-  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
-  background: var(--bg); color: var(--text);
-  height: 100%; display: flex; flex-direction: column; overflow: hidden;
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;}
+body{font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100%;display:flex;flex-direction:column;overflow:hidden;}
 
 /* NAV */
-.nav { background: var(--bg); padding-top: var(--safe-top); flex-shrink: 0; border-bottom: 0.5px solid var(--sep); }
-.nav-inner { height: 44px; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 16px; }
-.nav-title { font-size: 17px; font-weight: 600; }
-.nav-back {
-  position: absolute; left: 0; display: none; align-items: center;
-  background: none; border: none; color: var(--blue);
-  font-size: 17px; font-family: inherit; cursor: pointer; padding: 8px 16px; gap: 3px;
-}
-.nav-back svg { width: 10px; height: 17px; flex-shrink: 0; }
+.nav{background:var(--bg);padding-top:var(--safe-top);flex-shrink:0;border-bottom:0.5px solid var(--sep);}
+.nav-inner{height:44px;display:flex;align-items:center;justify-content:center;position:relative;padding:0 16px;}
+.nav-title{font-size:17px;font-weight:600;}
+.nav-back{position:absolute;left:0;display:none;align-items:center;background:none;border:none;color:var(--blue);font-size:17px;font-family:inherit;cursor:pointer;padding:8px 16px;gap:3px;}
+.nav-back svg{width:10px;height:17px;flex-shrink:0;}
+.nav-right{position:absolute;right:0;background:none;border:none;color:var(--blue);font-size:15px;font-family:inherit;cursor:pointer;padding:8px 16px;font-weight:500;}
 
 /* SCREENS */
-.screen { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; display: none; }
-.screen.active { display: block; }
-.inner { padding-bottom: calc(var(--safe-bottom) + 48px); }
+.screen{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;}
+.screen.active{display:block;}
+.inner{padding-bottom:calc(var(--safe-bottom) + 48px);}
 
 /* HERO */
-.hero { padding: 24px 20px 16px; background: var(--card); border-bottom: 0.5px solid var(--sep); }
-.hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; }
-.hero p { font-size: 15px; color: var(--text2); margin-top: 4px; }
+.hero{padding:24px 20px 16px;background:var(--card);border-bottom:0.5px solid var(--sep);}
+.hero h1{font-size:34px;font-weight:800;letter-spacing:-0.04em;line-height:1.05;}
+.hero p{font-size:15px;color:var(--text2);margin-top:4px;}
+
+/* RECENT TRIPS on home */
+.recent-wrap{margin:20px 16px 0;}
+.recent-label{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.03em;padding:0 4px 6px;display:flex;justify-content:space-between;align-items:center;}
+.recent-all{font-size:13px;color:var(--blue);font-weight:500;cursor:pointer;text-transform:none;letter-spacing:0;}
+.recent-card{background:var(--card);border-radius:12px;overflow:hidden;}
+.recent-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-top:0.5px solid var(--sep);cursor:pointer;transition:background 0.08s;}
+.recent-row:first-child{border-top:none;}
+.recent-row:active{background:var(--bg);}
+.recent-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.recent-info{flex:1;min-width:0;}
+.recent-dest{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.recent-dates{font-size:12px;color:var(--text2);margin-top:1px;}
+.recent-prog{font-size:13px;color:var(--text2);font-weight:500;flex-shrink:0;}
 
 /* FORM */
-.form-section { margin: 20px 16px 0; }
-.form-label { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.03em; padding: 0 4px 6px; }
-.form-card { background: var(--card); border-radius: 12px; overflow: hidden; }
-
-/* Destination input */
-.dest-row { display: flex; align-items: center; gap: 10px; padding: 13px 16px; }
-.dest-icon { font-size: 20px; }
-.dest-input {
-  flex: 1; background: none; border: none; outline: none;
-  font-size: 17px; font-family: inherit; color: var(--text);
-}
-.dest-input::placeholder { color: var(--text3); }
-.dest-clear {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--text3); border: none; color: #fff;
-  font-size: 13px; display: none; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; font-weight: 600; line-height: 1;
-}
-
-/* Suggestions dropdown */
-.suggestions {
-  background: var(--card); border-radius: 12px; overflow: hidden;
-  margin-top: 4px; display: none;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-.suggestion {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; border-top: 0.5px solid var(--sep);
-  cursor: pointer; font-size: 16px; color: var(--text);
-  transition: background 0.08s;
-}
-.suggestion:first-child { border-top: none; }
-.suggestion:active { background: var(--bg); }
-.sug-icon { font-size: 18px; }
-.sug-name { flex: 1; font-size: 16px; }
-.sug-country { font-size: 13px; color: var(--text2); }
-
-/* Date pair */
-.date-pair { display: flex; }
-.date-half { flex: 1; padding: 13px 16px; }
-.date-half + .date-half { border-left: 0.5px solid var(--sep); }
-.date-half label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 3px; font-weight: 500; }
-.date-half input[type=date] {
-  background: none; border: none; outline: none;
-  color: var(--text); font-size: 17px; font-family: inherit; width: 100%;
-  color-scheme: light;
-}
-
-/* Option rows */
-.opt-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 16px; min-height: 50px;
-  border-top: 0.5px solid var(--sep);
-}
-.opt-row:first-child { border-top: none; }
-.opt-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.opt-info { flex: 1; }
-.opt-label { font-size: 17px; }
-.opt-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
-
-/* iOS switch */
-.sw { position: relative; width: 51px; height: 31px; flex-shrink: 0; }
-.sw input { opacity: 0; width: 0; height: 0; position: absolute; }
-.sw-track { position: absolute; inset: 0; border-radius: 16px; cursor: pointer; background: rgba(120,120,128,0.2); transition: background 0.22s; }
-.sw-track::before {
-  content: ''; position: absolute; width: 27px; height: 27px; border-radius: 50%;
-  background: #fff; top: 2px; left: 2px;
-  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1);
-}
-.sw input:checked + .sw-track { background: var(--green); }
-.sw input:checked + .sw-track::before { transform: translateX(20px); }
-
-/* CTA */
-.cta-wrap { padding: 24px 16px 0; }
-.cta-btn {
-  width: 100%; padding: 16px;
-  background: var(--blue); color: #fff;
-  border: none; border-radius: 14px;
-  font-size: 17px; font-weight: 700; font-family: inherit;
-  cursor: pointer; letter-spacing: -0.01em;
-  transition: opacity 0.12s, transform 0.1s;
-}
-.cta-btn:active { opacity: 0.8; transform: scale(0.99); }
-.cta-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.form-section{margin:20px 16px 0;}
+.form-label{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.03em;padding:0 4px 6px;}
+.form-card{background:var(--card);border-radius:12px;overflow:hidden;}
+.dest-row{display:flex;align-items:center;gap:10px;padding:13px 16px;}
+.dest-icon{font-size:20px;}
+.dest-input{flex:1;background:none;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--text);}
+.dest-input::placeholder{color:var(--text3);}
+.dest-clear{width:20px;height:20px;border-radius:50%;background:var(--text3);border:none;color:#fff;font-size:13px;display:none;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-weight:600;}
+.suggestions{background:var(--card);border-radius:12px;overflow:hidden;margin-top:4px;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.1);}
+.suggestion{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:0.5px solid var(--sep);cursor:pointer;font-size:16px;color:var(--text);transition:background 0.08s;}
+.suggestion:first-child{border-top:none;}
+.suggestion:active{background:var(--bg);}
+.sug-name{flex:1;font-size:16px;}
+.sug-country{font-size:13px;color:var(--text2);}
+.date-pair{display:flex;}
+.date-half{flex:1;padding:13px 16px;}
+.date-half+.date-half{border-left:0.5px solid var(--sep);}
+.date-half label{font-size:12px;color:var(--text2);display:block;margin-bottom:3px;font-weight:500;}
+.date-half input[type=date]{background:none;border:none;outline:none;color:var(--text);font-size:17px;font-family:inherit;width:100%;color-scheme:light;}
+.opt-row{display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:50px;border-top:0.5px solid var(--sep);}
+.opt-row:first-child{border-top:none;}
+.opt-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.opt-info{flex:1;}
+.opt-label{font-size:17px;}
+.opt-sub{font-size:12px;color:var(--text2);margin-top:1px;}
+.sw{position:relative;width:51px;height:31px;flex-shrink:0;}
+.sw input{opacity:0;width:0;height:0;position:absolute;}
+.sw-track{position:absolute;inset:0;border-radius:16px;cursor:pointer;background:rgba(120,120,128,0.2);transition:background 0.22s;}
+.sw-track::before{content:'';position:absolute;width:27px;height:27px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 3px 8px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.1);}
+.sw input:checked+.sw-track{background:var(--green);}
+.sw input:checked+.sw-track::before{transform:translateX(20px);}
+.cta-wrap{padding:24px 16px 0;}
+.cta-btn{width:100%;padding:16px;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:17px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:-0.01em;transition:opacity 0.12s,transform 0.1s;}
+.cta-btn:active{opacity:0.8;transform:scale(0.99);}
 
 /* LOADING */
-.loading-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh; gap: 16px; }
-.spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.1); border-top-color: var(--blue); animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-size: 15px; color: var(--text2); }
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;}
+.spinner{width:36px;height:36px;border-radius:50%;border:3px solid rgba(0,0,0,0.1);border-top-color:var(--blue);animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:15px;color:var(--text2);}
 
 /* LIST SCREEN */
-.list-hero { padding: 20px 20px 12px; }
-.list-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.04em; }
-.list-hero p { font-size: 14px; color: var(--text2); margin-top: 3px; }
+.list-hero{padding:20px 20px 12px;}
+.list-hero h1{font-size:34px;font-weight:800;letter-spacing:-0.04em;}
+.list-hero p{font-size:14px;color:var(--text2);margin-top:3px;}
+.prog-wrap{margin:0 16px 4px;}
+.prog-card{background:var(--card);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.prog-track{flex:1;height:6px;background:#e5e5ea;border-radius:3px;}
+.prog-fill{height:100%;background:var(--blue);border-radius:3px;transition:width 0.4s ease;}
+.prog-label{font-size:14px;font-weight:600;color:var(--blue);min-width:36px;text-align:right;}
+.weather-wrap{margin:12px 16px 0;}
+.weather-card{background:var(--card);border-radius:14px;overflow:hidden;border:0.5px solid rgba(0,122,255,0.12);}
+.weather-hdr{padding:14px 16px 0;font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.06em;}
+.weather-days{display:flex;padding:10px 10px 14px;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.weather-days::-webkit-scrollbar{display:none;}
+.weather-day{flex:1;min-width:62px;text-align:center;padding:10px 6px;border-radius:12px;background:#f2f2f7;}
+.wd-today{background:#e8f0ff;}
+.wd-name{font-size:11px;color:var(--text2);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.03em;}
+.wd-today .wd-name{color:var(--blue);}
+.wd-icon{font-size:22px;margin-bottom:4px;}
+.wd-temp{font-size:13px;font-weight:700;color:var(--text);}
+.wd-desc{font-size:10px;color:var(--text2);margin-top:2px;}
+.weather-tip{margin:8px 16px 0;padding:10px 14px;background:var(--card);border-radius:10px;border-left:3px solid var(--green);font-size:13px;color:var(--text2);line-height:1.4;}
+.pack-section{margin:16px 16px 0;}
+.section-hdr{display:flex;align-items:center;gap:8px;padding:0 4px 8px;}
+.section-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.section-name{font-size:20px;font-weight:800;letter-spacing:-0.03em;flex:1;}
+.section-tally{font-size:15px;font-weight:600;color:var(--text2);}
+.pack-card{background:var(--card);border-radius:14px;overflow:hidden;}
+.pack-row{display:flex;align-items:center;gap:14px;padding:12px 16px;min-height:48px;border-top:0.5px solid var(--sep);cursor:pointer;user-select:none;-webkit-user-select:none;transition:background 0.08s;}
+.pack-row:first-child{border-top:none;}
+.pack-row:active{background:var(--bg);}
+.rem-check{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:2px solid #c7c7cc;display:flex;align-items:center;justify-content:center;transition:all 0.2s cubic-bezier(0.34,1.4,0.64,1);}
+.rem-check.done{border-color:transparent;}
+.rem-check.done::after{content:'';width:6px;height:10px;border:2.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);display:block;}
+.rem-label{font-size:17px;flex:1;transition:color 0.15s;letter-spacing:-0.01em;}
+.rem-label.done{color:var(--text3);text-decoration:line-through;}
+.rem-qty{font-size:14px;color:var(--text2);font-weight:600;background:#f2f2f7;padding:3px 9px;border-radius:20px;flex-shrink:0;}
+.add-row{display:flex;align-items:center;padding:0 16px;gap:12px;border-top:0.5px solid var(--sep);background:var(--card);}
+.add-plus-icon{font-size:22px;font-weight:300;flex-shrink:0;line-height:1;padding:11px 0;}
+.add-input{flex:1;background:none;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--text);padding:13px 0;}
+.add-input::placeholder{color:var(--text3);}
 
-/* Progress */
-.prog-wrap { margin: 0 16px 4px; }
-.prog-card { background: var(--card); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
-.prog-track { flex: 1; height: 6px; background: #e5e5ea; border-radius: 3px; }
-.prog-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s ease; }
-.prog-label { font-size: 14px; font-weight: 600; color: var(--blue); min-width: 36px; text-align: right; }
-
-/* Weather */
-.weather-wrap { margin: 12px 16px 0; }
-.weather-card { background: var(--card); border-radius: 14px; overflow: hidden; border: 0.5px solid rgba(0,122,255,0.12); }
-.weather-hdr { padding: 14px 16px 0; font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; }
-.weather-days { display: flex; padding: 10px 10px 14px; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.weather-days::-webkit-scrollbar { display: none; }
-.weather-day { flex: 1; min-width: 62px; text-align: center; padding: 10px 6px; border-radius: 12px; background: #f2f2f7; }
-.wd-today { background: #e8f0ff; }
-.wd-name { font-size: 11px; color: var(--text2); font-weight: 700; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.03em; }
-.wd-today .wd-name { color: var(--blue); }
-.wd-icon { font-size: 22px; margin-bottom: 4px; }
-.wd-temp { font-size: 13px; font-weight: 700; color: var(--text); }
-.wd-desc { font-size: 10px; color: var(--text2); margin-top: 2px; }
-
-/* Weather clothing tip */
-.weather-tip {
-  margin: 0 16px;
-  padding: 10px 14px;
-  background: var(--card);
-  border-radius: 10px;
-  border-left: 3px solid var(--green);
-  font-size: 13px; color: var(--text2); line-height: 1.4;
-}
-
-/* Packing sections */
-.pack-section { margin: 16px 16px 0; }
-.section-hdr { display: flex; align-items: center; gap: 8px; padding: 0 4px 8px; }
-.section-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.section-name { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; flex: 1; }
-.section-tally { font-size: 15px; font-weight: 600; color: var(--text2); }
-.pack-card { background: var(--card); border-radius: 14px; overflow: hidden; }
-.pack-row {
-  display: flex; align-items: center; gap: 14px;
-  padding: 12px 16px; min-height: 48px;
-  border-top: 0.5px solid var(--sep);
-  cursor: pointer; user-select: none; -webkit-user-select: none;
-  transition: background 0.08s;
-}
-.pack-row:first-child { border-top: none; }
-.pack-row:active { background: var(--bg); }
-.rem-check { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; border: 2px solid #c7c7cc; display: flex; align-items: center; justify-content: center; transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1); }
-.rem-check.done { border-color: transparent; }
-.rem-check.done::after { content: ''; width: 6px; height: 10px; border: 2.5px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px,-1px); display: block; }
-.rem-label { font-size: 17px; flex: 1; transition: color 0.15s; letter-spacing: -0.01em; }
-.rem-label.done { color: var(--text3); text-decoration: line-through; }
-.rem-qty { font-size: 14px; color: var(--text2); font-weight: 600; background: #f2f2f7; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
-
-/* Add row */
-.add-row { display: flex; align-items: center; padding: 0 16px; gap: 12px; border-top: 0.5px solid var(--sep); background: var(--card); }
-.add-plus-icon { font-size: 22px; font-weight: 300; flex-shrink: 0; line-height: 1; padding: 11px 0; }
-.add-input { flex: 1; background: none; border: none; outline: none; font-size: 17px; font-family: inherit; color: var(--text); padding: 13px 0; }
-.add-input::placeholder { color: var(--text3); }
+/* HISTORY SCREEN */
+.hist-hero{padding:24px 20px 16px;background:var(--card);border-bottom:0.5px solid var(--sep);}
+.hist-hero h1{font-size:34px;font-weight:800;letter-spacing:-0.04em;}
+.hist-hero p{font-size:15px;color:var(--text2);margin-top:4px;}
+.hist-empty{text-align:center;padding:60px 32px;}
+.hist-empty-icon{font-size:52px;margin-bottom:12px;}
+.hist-empty-text{font-size:17px;font-weight:600;margin-bottom:6px;}
+.hist-empty-sub{font-size:15px;color:var(--text2);}
+.hist-section{margin:20px 16px 0;}
+.hist-year-label{font-size:22px;font-weight:800;letter-spacing:-0.03em;color:var(--text);padding:0 4px 8px;}
+.hist-card{background:var(--card);border-radius:14px;overflow:hidden;margin-bottom:12px;}
+.hist-row{display:flex;align-items:center;gap:12px;padding:13px 16px;min-height:64px;border-top:0.5px solid var(--sep);}
+.hist-row:first-child{border-top:none;}
+.hist-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.hist-info{flex:1;min-width:0;}
+.hist-dest{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hist-dates{font-size:13px;color:var(--text2);margin-top:2px;}
+.hist-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
+.hist-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;color:#fff;}
+.hist-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.hist-prog{font-size:12px;color:var(--text2);font-weight:500;}
+.hist-open{background:var(--blue);border:none;color:#fff;font-size:12px;font-weight:700;font-family:inherit;padding:5px 12px;border-radius:20px;cursor:pointer;white-space:nowrap;}
+.hist-open:active{opacity:0.7;}
+.hist-del{background:none;border:none;color:var(--red);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;padding:0;}
+.hist-del:active{opacity:0.7;}
 </style>
 </head>
 <body>
 
 <div class="nav">
   <div class="nav-inner">
-    <button class="nav-back" id="nav-back" onclick="goBack()">
+    <button class="nav-back" id="nav-back" onclick="navBack()">
       <svg viewBox="0 0 10 17" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,1 1,8.5 9,16"/></svg>
       &nbsp;Back
     </button>
     <span class="nav-title" id="nav-title">Travel Packer</span>
+    <button class="nav-right" id="nav-right" onclick="showHistory()">History</button>
   </div>
 </div>
 
@@ -240,7 +187,8 @@ body {
       <p>Any destination. Perfect list.</p>
     </div>
 
-    <!-- Destination -->
+    <div id="recent-section"></div>
+
     <div class="form-section">
       <div class="form-label">Destination</div>
       <div class="form-card">
@@ -253,56 +201,39 @@ body {
       <div class="suggestions" id="suggestions"></div>
     </div>
 
-    <!-- Dates -->
     <div class="form-section">
       <div class="form-label">Travel dates</div>
       <div class="form-card">
         <div class="date-pair">
-          <div class="date-half">
-            <label>Departure</label>
-            <input type="date" id="dep-date">
-          </div>
-          <div class="date-half">
-            <label>Return</label>
-            <input type="date" id="ret-date">
-          </div>
+          <div class="date-half"><label>Departure</label><input type="date" id="dep-date"></div>
+          <div class="date-half"><label>Return</label><input type="date" id="ret-date"></div>
         </div>
       </div>
     </div>
 
-    <!-- Activities -->
     <div class="form-section">
       <div class="form-label">Activities</div>
       <div class="form-card">
         <div class="opt-row">
           <div class="opt-icon" style="background:#fff0f3;">🏋️</div>
-          <div class="opt-info">
-            <div class="opt-label">Working out?</div>
-            <div class="opt-sub">Adds gym clothes & card</div>
-          </div>
+          <div class="opt-info"><div class="opt-label">Working out?</div><div class="opt-sub">Adds gym clothes & card</div></div>
           <label class="sw"><input type="checkbox" id="gym-toggle"><span class="sw-track"></span></label>
         </div>
         <div class="opt-row">
           <div class="opt-icon" style="background:#e8f6ff;">🏊</div>
-          <div class="opt-info">
-            <div class="opt-label">Swimming?</div>
-            <div class="opt-sub">Adds swim trunks & towel</div>
-          </div>
+          <div class="opt-info"><div class="opt-label">Swimming?</div><div class="opt-sub">Adds swim trunks & towel</div></div>
           <label class="sw"><input type="checkbox" id="swim-toggle"><span class="sw-track"></span></label>
         </div>
         <div class="opt-row">
           <div class="opt-icon" style="background:#fff1f0;">💼</div>
-          <div class="opt-info">
-            <div class="opt-label">Working remotely?</div>
-            <div class="opt-sub">Adds laptop & work phone</div>
-          </div>
+          <div class="opt-info"><div class="opt-label">Working remotely?</div><div class="opt-sub">Adds laptop & work phone</div></div>
           <label class="sw"><input type="checkbox" id="work-toggle"><span class="sw-track"></span></label>
         </div>
       </div>
     </div>
 
     <div class="cta-wrap">
-      <button class="cta-btn" id="gen-btn" onclick="startGeneration()">Build Packing List</button>
+      <button class="cta-btn" onclick="startGeneration()">Build Packing List</button>
     </div>
   </div>
 </div>
@@ -329,27 +260,199 @@ body {
       </div>
     </div>
     <div class="weather-wrap" id="weather-section"></div>
-    <div id="weather-tip"></div>
+    <div id="weather-tip-el"></div>
     <div id="packing-sections"></div>
   </div>
 </div>
 
-<script>
-let allIds = [], checked = new Set();
-let selectedLat = null, selectedLon = null, selectedCity = '';
+<!-- HISTORY -->
+<div class="screen" id="screen-history">
+  <div class="inner">
+    <div class="hist-hero">
+      <h1>Past Trips</h1>
+      <p>Tap any trip to reload its packing list.</p>
+    </div>
+    <div id="hist-content"></div>
+  </div>
+</div>
 
-const SECTIONS = {
-  essentials:  { color: '#007aff', bg: '#f0f6ff', label: 'Essentials',        icon: '🪪' },
-  clothing:    { color: '#34c759', bg: '#f0faf2', label: 'Clothing',           icon: '👕' },
-  footwear:    { color: '#ff9500', bg: '#fff8ec', label: 'Footwear',           icon: '👟' },
-  toiletries:  { color: '#5ac8fa', bg: '#f0faff', label: 'Toiletries',         icon: '🧴' },
-  tech:        { color: '#af52de', bg: '#f8f0ff', label: 'Tech & Charging',    icon: '🔌' },
-  work:        { color: '#ff3b30', bg: '#fff1f0', label: 'Work',               icon: '💼' },
-  gym:         { color: '#ff2d55', bg: '#fff0f3', label: 'Gym',                icon: '🏋️' },
-  swim:        { color: '#32ade6', bg: '#f0f9ff', label: 'Swimming',           icon: '🏊' },
+<script>
+// ── Constants ──
+const SECTIONS_META = {
+  essentials: { color:'#007aff', bg:'#f0f6ff', label:'Essentials',      icon:'🪪' },
+  clothing:   { color:'#34c759', bg:'#f0faf2', label:'Clothing',         icon:'👕' },
+  footwear:   { color:'#ff9500', bg:'#fff8ec', label:'Footwear',         icon:'👟' },
+  toiletries: { color:'#5ac8fa', bg:'#f0faff', label:'Toiletries',       icon:'🧴' },
+  tech:       { color:'#af52de', bg:'#f8f0ff', label:'Tech & Charging',  icon:'🔌' },
+  work:       { color:'#ff3b30', bg:'#fff1f0', label:'Work',             icon:'💼' },
+  gym:        { color:'#ff2d55', bg:'#fff0f3', label:'Gym',              icon:'🏋️' },
+  swim:       { color:'#32ade6', bg:'#f0f9ff', label:'Swimming',         icon:'🏊' },
 };
 
-// ── Destination autocomplete via Open-Meteo geocoding ──
+const DEST_EMOJIS = ['🌍','🗼','🏖','🏔','🌴','🗽','🎌','🏰','🌊','🌸','🎭','🦁'];
+function destEmoji(city) {
+  let h = 0; for (const c of city) h = (h*31+c.charCodeAt(0))&0xffff;
+  return DEST_EMOJIS[h % DEST_EMOJIS.length];
+}
+
+// ── State ──
+let allIds = [], checked = new Set();
+let selectedLat = null, selectedLon = null, selectedCity = '';
+let currentTripId = null;
+let navStack = ['setup'];
+
+// ── localStorage helpers ──
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem('travel-packer-history') || '[]'); } catch { return []; }
+}
+function saveHistory(h) {
+  localStorage.setItem('travel-packer-history', JSON.stringify(h));
+}
+function saveTripState() {
+  if (!currentTripId) return;
+  const h = loadHistory();
+  const idx = h.findIndex(t => t.id === currentTripId);
+  if (idx === -1) return;
+  h[idx].checked = [...checked];
+  h[idx].allIds = allIds;
+  saveHistory(h);
+}
+function addTripToHistory(trip) {
+  const h = loadHistory();
+  const existing = h.findIndex(t => t.id === trip.id);
+  if (existing !== -1) h.splice(existing, 1);
+  h.unshift(trip);
+  if (h.length > 50) h.length = 50;
+  saveHistory(h);
+}
+
+// ── Nav ──
+function show(id, title, showBack, showHistBtn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-title').textContent = title || 'Travel Packer';
+  document.getElementById('nav-back').style.display = showBack ? 'flex' : 'none';
+  document.getElementById('nav-right').style.display = showHistBtn ? 'block' : 'none';
+  document.getElementById('nav-right').textContent = 'History';
+}
+function navBack() {
+  navStack.pop();
+  const prev = navStack[navStack.length-1];
+  if (prev === 'setup') { show('screen-setup','Travel Packer',false,true); clearActiveTrip(); renderRecent(); }
+  else if (prev === 'list') { show('screen-list', selectedCity, true, false); }
+  else if (prev === 'history') { show('screen-history','Past Trips',true,false); renderHistoryScreen(); }
+}
+function showHistory() {
+  navStack.push('history');
+  show('screen-history','Past Trips',true,false);
+  renderHistoryScreen();
+}
+function goBack() { navBack(); }
+
+// ── Recent trips on home ──
+function renderRecent() {
+  const h = loadHistory().slice(0,3);
+  const el = document.getElementById('recent-section');
+  if (!h.length) { el.innerHTML=''; return; }
+  const rows = h.map(t => {
+    const pct = t.allIds?.length ? Math.round((t.checked?.length||0)/t.allIds.length*100) : 0;
+    return `<div class="recent-row" onclick="loadTrip('${t.id}')">
+      <div class="recent-dot" style="background:${SECTIONS_META.essentials.bg}">${destEmoji(t.city)}</div>
+      <div class="recent-info">
+        <div class="recent-dest">${t.city}</div>
+        <div class="recent-dates">${t.depFmt} – ${t.retFmt} · ${t.nights}n</div>
+      </div>
+      <div class="recent-prog">${pct}%</div>
+    </div>`;
+  }).join('');
+  el.innerHTML = `<div class="recent-wrap">
+    <div class="recent-label">Recent trips <span class="recent-all" onclick="showHistory()">See all</span></div>
+    <div class="recent-card">${rows}</div>
+  </div>`;
+}
+
+// ── History screen ──
+function renderHistoryScreen() {
+  const h = loadHistory();
+  const el = document.getElementById('hist-content');
+  if (!h.length) {
+    el.innerHTML = `<div class="hist-empty">
+      <div class="hist-empty-icon">✈️</div>
+      <div class="hist-empty-text">No trips yet</div>
+      <div class="hist-empty-sub">Your trip history will appear here after you build your first packing list.</div>
+    </div>`; return;
+  }
+  // Group by year
+  const byYear = {};
+  h.forEach(t => {
+    const y = new Date(t.dep).getFullYear();
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(t);
+  });
+  let html = '';
+  Object.keys(byYear).sort((a,b)=>b-a).forEach(year => {
+    html += `<div class="hist-section"><div class="hist-year-label">${year}</div><div class="hist-card">`;
+    byYear[year].forEach(t => {
+      const pct = t.allIds?.length ? Math.round((t.checked?.length||0)/t.allIds.length*100) : 0;
+      const tags = [];
+      if (t.gym)  tags.push(`<span class="hist-tag" style="background:#ff2d55">Gym</span>`);
+      if (t.swim) tags.push(`<span class="hist-tag" style="background:#32ade6">Swimming</span>`);
+      if (t.work) tags.push(`<span class="hist-tag" style="background:#ff3b30">Work</span>`);
+      html += `<div class="hist-row">
+        <div class="hist-dot" style="background:#f0f6ff">${destEmoji(t.city)}</div>
+        <div class="hist-info">
+          <div class="hist-dest">${t.city}</div>
+          <div class="hist-dates">${t.depFmt} – ${t.retFmt} · ${t.nights} night${t.nights>1?'s':''}</div>
+          ${tags.length ? `<div class="hist-tags">${tags.join('')}</div>` : ''}
+        </div>
+        <div class="hist-actions">
+          <div class="hist-prog">${pct}% packed</div>
+          <button class="hist-open" onclick="loadTrip('${t.id}')">Open</button>
+          <button class="hist-del" onclick="deleteTrip('${t.id}',event)">Delete</button>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  el.innerHTML = html;
+}
+
+function deleteTrip(id, e) {
+  e.stopPropagation();
+  const h = loadHistory().filter(t => t.id !== id);
+  saveHistory(h);
+  renderHistoryScreen();
+  renderRecent();
+}
+
+function loadTrip(id) {
+  const h = loadHistory();
+  const trip = h.find(t => t.id === id);
+  if (!trip) return;
+  currentTripId = trip.id;
+  selectedCity = trip.city;
+  selectedLat = trip.lat;
+  selectedLon = trip.lon;
+  navStack.push('list');
+  show('screen-list', trip.city, true, false);
+  // Restore rendered sections
+  document.getElementById('trip-title').textContent = trip.city;
+  document.getElementById('trip-meta').textContent = `${trip.depFmt} – ${trip.retFmt} · ${trip.nights} night${trip.nights>1?'s':''} away`;
+  // Re-render packing sections from stored data
+  const sections = buildSections(trip.nights, trip.w, trip.gym, trip.swim, trip.work);
+  allIds = []; checked = new Set(trip.checked||[]);
+  renderSections(sections);
+  // Weather tip
+  document.getElementById('weather-tip-el').innerHTML = trip.weatherTip
+    ? `<div class="weather-tip">${trip.weatherTip}</div>` : '';
+  // Weather strip
+  const weatherEl = document.getElementById('weather-section');
+  weatherEl.innerHTML = trip.weatherHtml || '';
+  weatherEl.style.display = trip.weatherHtml ? 'block' : 'none';
+  updateProgress();
+}
+
+// ── Destination autocomplete ──
 let suggestTimeout = null;
 async function onDestInput() {
   const val = document.getElementById('dest-input').value.trim();
@@ -359,331 +462,292 @@ async function onDestInput() {
   if (val.length < 2) { hideSuggestions(); return; }
   suggestTimeout = setTimeout(() => fetchSuggestions(val), 300);
 }
-
 async function fetchSuggestions(q) {
   try {
     const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=en&format=json`);
     const data = await res.json();
-    showSuggestions(data.results || []);
-  } catch(e) { hideSuggestions(); }
+    showSuggestions(data.results||[]);
+  } catch { hideSuggestions(); }
 }
-
 function showSuggestions(results) {
   const el = document.getElementById('suggestions');
   if (!results.length) { hideSuggestions(); return; }
   el.innerHTML = results.map(r => {
-    const country = r.country || '';
     const admin = r.admin1 ? `, ${r.admin1}` : '';
-    return `<div class="suggestion" onclick="selectPlace(${r.latitude},${r.longitude},'${escQ(r.name)}','${escQ(country)}')">
-      <span class="sug-icon">📍</span>
+    return `<div class="suggestion" onclick="selectPlace(${r.latitude},${r.longitude},'${escQ(r.name)}','${escQ(r.country||'')}')">
+      <span style="font-size:18px">📍</span>
       <span class="sug-name">${r.name}${admin}</span>
-      <span class="sug-country">${country}</span>
+      <span class="sug-country">${r.country||''}</span>
     </div>`;
   }).join('');
   el.style.display = 'block';
 }
-
-function escQ(s) { return (s||'').replace(/'/g, "\\'"); }
-function hideSuggestions() { document.getElementById('suggestions').style.display = 'none'; }
-function hideSuggestionsDelayed() { setTimeout(hideSuggestions, 200); }
-
-function selectPlace(lat, lon, city, country) {
-  selectedLat = lat; selectedLon = lon;
-  selectedCity = city;
+function escQ(s) { return (s||'').replace(/'/g,"\\'"); }
+function hideSuggestions() { document.getElementById('suggestions').style.display='none'; }
+function hideSuggestionsDelayed() { setTimeout(hideSuggestions,200); }
+function selectPlace(lat,lon,city,country) {
+  selectedLat=lat; selectedLon=lon; selectedCity=city;
   document.getElementById('dest-input').value = country ? `${city}, ${country}` : city;
-  document.getElementById('dest-clear').style.display = 'flex';
+  document.getElementById('dest-clear').style.display='flex';
   hideSuggestions();
 }
-
 function clearDest() {
-  document.getElementById('dest-input').value = '';
-  document.getElementById('dest-clear').style.display = 'none';
-  selectedLat = null; selectedLon = null; selectedCity = '';
+  document.getElementById('dest-input').value='';
+  document.getElementById('dest-clear').style.display='none';
+  selectedLat=null; selectedLon=null; selectedCity='';
   hideSuggestions();
 }
 
-// ── Main generation ──
-function show(id, title) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.getElementById('nav-title').textContent = title || 'Travel Packer';
-  document.getElementById('nav-back').style.display = id === 'screen-list' ? 'flex' : 'none';
+// ── Generation ──
+const getDates=(dep,ret)=>{const dates=[],cur=new Date(dep),last=new Date(ret);while(cur<=last){dates.push(new Date(cur));cur.setDate(cur.getDate()+1);}return dates;};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function analyze(data) {
+  if (!data?.daily) return {avgMax:18,cold:false,cool:false,mild:true,hot:false,hasRain:false,hasSnow:false,beach:false};
+  const avg=a=>a.reduce((s,v)=>s+v,0)/a.length;
+  const m=avg(data.daily.temperature_2m_max);
+  return {avgMax:m,cold:m<10,cool:m>=10&&m<18,mild:m>=18&&m<=26,hot:m>26,
+    hasRain:data.daily.weathercode.some(c=>c>=51&&c<71),
+    hasSnow:data.daily.weathercode.some(c=>c>=71&&c<=77),beach:m>24};
 }
-function goBack() { show('screen-setup', 'Travel Packer'); }
+function wInfo(c) {
+  if(c===0)return{icon:'☀️',desc:'Clear'};if(c<=2)return{icon:'⛅',desc:'Partly cloudy'};
+  if(c===3)return{icon:'☁️',desc:'Overcast'};if(c<=48)return{icon:'🌫️',desc:'Fog'};
+  if(c<=57)return{icon:'🌦️',desc:'Drizzle'};if(c<=67)return{icon:'🌧️',desc:'Rain'};
+  if(c<=77)return{icon:'❄️',desc:'Snow'};if(c<=82)return{icon:'🌦️',desc:'Showers'};
+  return{icon:'⛈️',desc:'Storm'};
+}
+function weatherTip(w) {
+  if(w.hasSnow) return'❄️ Snow expected — pack waterproof boots and warm layers.';
+  if(w.cold)   return'🧥 Cold trip — think thermal layers, coat, scarf and gloves.';
+  if(w.cool&&w.hasRain) return'🌧️ Cool and rainy — a waterproof jacket will earn its keep.';
+  if(w.cool)   return'🍂 Cool weather — a jacket or hoodie for evenings.';
+  if(w.hot)    return'☀️ Hot destination — light breathable fabrics and sun protection.';
+  if(w.hasRain)return'🌦️ Some rain expected — pack a compact umbrella.';
+  return'🌤️ Mild conditions — versatile layers should cover you.';
+}
 
 async function startGeneration() {
-  if (!selectedLat || !selectedLon) { alert('Please select a destination from the list.'); return; }
-  const dep = document.getElementById('dep-date').value;
-  const ret = document.getElementById('ret-date').value;
-  if (!dep || !ret || new Date(ret) <= new Date(dep)) { alert('Please select valid dates.'); return; }
+  if (!selectedLat||!selectedLon) { alert('Please select a destination from the list.'); return; }
+  const dep=document.getElementById('dep-date').value;
+  const ret=document.getElementById('ret-date').value;
+  if (!dep||!ret||new Date(ret)<=new Date(dep)) { alert('Please select valid dates.'); return; }
+  const gym=document.getElementById('gym-toggle').checked;
+  const swim=document.getElementById('swim-toggle').checked;
+  const work=document.getElementById('work-toggle').checked;
+  const nights=Math.round((new Date(ret)-new Date(dep))/86400000);
+  const fmt=d=>new Date(d).toLocaleDateString('en-DE',{day:'numeric',month:'short'});
+  navStack.push('list');
+  show('screen-loading','Travel Packer',false,false);
 
-  const gym  = document.getElementById('gym-toggle').checked;
-  const swim = document.getElementById('swim-toggle').checked;
-  const work = document.getElementById('work-toggle').checked;
-  const nights = Math.round((new Date(ret) - new Date(dep)) / 86400000);
-
-  show('screen-loading', 'Travel Packer');
-
-  let weather = null;
+  let weather=null, weatherHtml='', tip='';
   try {
-    document.getElementById('loader-text').textContent = `Checking weather in ${selectedCity}…`;
-    const dates = getDates(dep, ret);
-    const s = dates[0].toISOString().split('T')[0];
-    const e = dates[dates.length-1].toISOString().split('T')[0];
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${selectedLat}&longitude=${selectedLon}&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=auto&start_date=${s}&end_date=${e}`);
-    weather = await r.json();
-    document.getElementById('loader-text').textContent = 'Building your list…';
+    document.getElementById('loader-text').textContent=`Checking weather in ${selectedCity}…`;
+    const dates=getDates(dep,ret);
+    const s=dates[0].toISOString().split('T')[0];
+    const e=dates[dates.length-1].toISOString().split('T')[0];
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${selectedLat}&longitude=${selectedLon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&start_date=${s}&end_date=${e}`);
+    weather=await r.json();
+    document.getElementById('loader-text').textContent='Building your list…';
     await sleep(400);
-  } catch(err) { await sleep(500); }
-
-  const w = analyze(weather);
-  render(dep, ret, nights, w, weather, gym, swim, work);
-  show('screen-list', selectedCity);
-}
-
-const getDates = (dep, ret) => {
-  const dates = [], cur = new Date(dep), last = new Date(ret);
-  while (cur <= last) { dates.push(new Date(cur)); cur.setDate(cur.getDate()+1); }
-  return dates;
-};
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-function analyze(data) {
-  if (!data?.daily) return { avgMax:18, cold:false, hot:false, mild:true, hasRain:false, hasSnow:false, beach:false };
-  const avg = a => a.reduce((s,v)=>s+v,0)/a.length;
-  const avgMax = avg(data.daily.temperature_2m_max);
-  const avgMin = avg(data.daily.temperature_2m_min);
-  return {
-    avgMax, avgMin,
-    cold: avgMax < 10,
-    cool: avgMax >= 10 && avgMax < 18,
-    mild: avgMax >= 18 && avgMax <= 26,
-    hot:  avgMax > 26,
-    hasRain: data.daily.weathercode.some(c => c >= 51 && c < 71),
-    hasSnow: data.daily.weathercode.some(c => c >= 71 && c <= 77),
-    beach: avgMax > 24,
-  };
-}
-
-function wInfo(c) {
-  if (c===0)  return {icon:'☀️', desc:'Clear'};
-  if (c<=2)   return {icon:'⛅', desc:'Partly cloudy'};
-  if (c===3)  return {icon:'☁️', desc:'Overcast'};
-  if (c<=48)  return {icon:'🌫️', desc:'Fog'};
-  if (c<=57)  return {icon:'🌦️', desc:'Drizzle'};
-  if (c<=67)  return {icon:'🌧️', desc:'Rain'};
-  if (c<=77)  return {icon:'❄️', desc:'Snow'};
-  if (c<=82)  return {icon:'🌦️', desc:'Showers'};
-  return {icon:'⛈️', desc:'Storm'};
-}
-
-function weatherTip(w) {
-  if (w.hasSnow)       return '❄️ Snow expected — pack waterproof boots and warm layers.';
-  if (w.cold)          return '🧥 Cold trip — think thermal layers, coat, scarf and gloves.';
-  if (w.cool && w.hasRain) return '🌧️ Cool and rainy — a waterproof jacket will earn its keep.';
-  if (w.cool)          return '🍂 Cool weather — a jacket or hoodie for evenings.';
-  if (w.hot)           return '☀️ Hot destination — light breathable fabrics and sun protection.';
-  if (w.hasRain)       return '🌦️ Some rain expected — pack a compact umbrella.';
-  return '🌤️ Mild conditions — versatile layers should cover you.';
-}
-
-function render(dep, ret, nights, w, weatherData, gym, swim, work) {
-  const fmt = d => new Date(d).toLocaleDateString('en-DE', {day:'numeric', month:'short'});
-  document.getElementById('trip-title').textContent = selectedCity;
-  document.getElementById('trip-meta').textContent = `${fmt(dep)} – ${fmt(ret)} · ${nights} night${nights>1?'s':''} away`;
-
-  // Weather strip
-  const weatherEl = document.getElementById('weather-section');
-  if (weatherData?.daily) {
-    const dates = getDates(dep, ret);
-    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    let html = `<div class="weather-card"><div class="weather-hdr">${selectedCity} Forecast</div><div class="weather-days">`;
-    dates.forEach((d,i) => {
-      const info = wInfo(weatherData.daily.weathercode[i]);
-      const hi = Math.round(weatherData.daily.temperature_2m_max[i]);
-      const lo = Math.round(weatherData.daily.temperature_2m_min[i]);
-      const isToday = d.toDateString() === new Date().toDateString();
-      html += `<div class="weather-day${isToday?' wd-today':''}">
-        <div class="wd-name">${isToday?'Today':days[d.getDay()]}</div>
-        <div class="wd-icon">${info.icon}</div>
-        <div class="wd-temp">${lo}–${hi}°</div>
-        <div class="wd-desc">${info.desc}</div>
-      </div>`;
+    // Build weather strip HTML
+    const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    weatherHtml=`<div class="weather-card"><div class="weather-hdr">${selectedCity} Forecast</div><div class="weather-days">`;
+    dates.forEach((d,i)=>{
+      const info=wInfo(weather.daily.weathercode[i]);
+      const hi=Math.round(weather.daily.temperature_2m_max[i]);
+      const lo=Math.round(weather.daily.temperature_2m_min[i]);
+      const isToday=d.toDateString()===new Date().toDateString();
+      weatherHtml+=`<div class="weather-day${isToday?' wd-today':''}"><div class="wd-name">${isToday?'Today':days[d.getDay()]}</div><div class="wd-icon">${info.icon}</div><div class="wd-temp">${lo}–${hi}°</div><div class="wd-desc">${info.desc}</div></div>`;
     });
-    html += `</div></div>`;
-    weatherEl.innerHTML = html;
-    weatherEl.style.display = 'block';
-  } else {
-    weatherEl.style.display = 'none';
-  }
+    weatherHtml+=`</div></div>`;
+  } catch { await sleep(500); }
 
-  // Clothing tip
-  document.getElementById('weather-tip').innerHTML = weatherData
-    ? `<div class="weather-tip" style="margin-top:8px;">${weatherTip(w)}</div>` : '';
+  const w=analyze(weather);
+  tip=weather?weatherTip(w):'';
 
-  // Build sections
-  const sections = buildSections(nights, w, gym, swim, work);
-  allIds = []; checked.clear();
-  let html = '';
+  // Save to history
+  currentTripId=`trip-${Date.now()}`;
+  const sections=buildSections(nights,w,gym,swim,work);
+  const tempIds=[];
+  sections.forEach((sec,_)=>sec.items.forEach((_,i)=>tempIds.push(`${sec.key}-${i}`)));
 
-  sections.forEach(sec => {
-    const s = SECTIONS[sec.key];
-    sec.items.forEach((_,i) => allIds.push(`${sec.key}-${i}`));
-    html += `<div class="pack-section">
+  addTripToHistory({
+    id:currentTripId, city:selectedCity, lat:selectedLat, lon:selectedLon,
+    dep, ret, depFmt:fmt(dep), retFmt:fmt(ret), nights,
+    gym, swim, work, w, weatherHtml, weatherTip:tip,
+    allIds:tempIds, checked:[], createdAt:Date.now()
+  });
+
+  // Render
+  show('screen-list',selectedCity,true,false);
+  document.getElementById('trip-title').textContent=selectedCity;
+  document.getElementById('trip-meta').textContent=`${fmt(dep)} – ${fmt(ret)} · ${nights} night${nights>1?'s':''} away`;
+  const weatherEl=document.getElementById('weather-section');
+  weatherEl.innerHTML=weatherHtml;
+  weatherEl.style.display=weatherHtml?'block':'none';
+  document.getElementById('weather-tip-el').innerHTML=tip?`<div class="weather-tip">${tip}</div>`:'';
+  allIds=[]; checked=new Set();
+  renderSections(sections);
+  updateProgress();
+  renderRecent();
+}
+
+// ── Rendering ──
+function renderSections(sections) {
+  let html='';
+  sections.forEach(sec=>{
+    const s=SECTIONS_META[sec.key];
+    sec.items.forEach((_,i)=>{ if(!allIds.includes(`${sec.key}-${i}`)) allIds.push(`${sec.key}-${i}`); });
+    html+=`<div class="pack-section">
       <div class="section-hdr">
-        <div class="section-dot" style="background:${s.bg};">${s.icon}</div>
+        <div class="section-dot" style="background:${s.bg}">${s.icon}</div>
         <div class="section-name" style="color:${s.color}">${s.label}</div>
         <div class="section-tally" id="tally-${sec.key}"></div>
       </div>
       <div class="pack-card" id="card-${sec.key}">`;
-    sec.items.forEach((item,i) => {
-      const id = `${sec.key}-${i}`;
-      html += `<div class="pack-row" onclick="toggle('${id}','${sec.key}')">
-        <div class="rem-check" id="chk-${id}" style="border-color:${s.color}"></div>
-        <div class="rem-label" id="lbl-${id}">${item.name}</div>
+    sec.items.forEach((item,i)=>{
+      const id=`${sec.key}-${i}`;
+      const done=checked.has(id);
+      html+=`<div class="pack-row" onclick="toggle('${id}','${sec.key}')">
+        <div class="rem-check${done?' done':''}" id="chk-${id}" style="${done?`background:${s.color};border-color:transparent`:`border-color:${s.color}`}"></div>
+        <div class="rem-label${done?' done':''}" id="lbl-${id}">${item.name}</div>
         ${item.qty?`<div class="rem-qty">×${item.qty}</div>`:''}
       </div>`;
     });
-    html += `<div class="add-row">
-        <div class="add-plus-icon" style="color:${s.color}">+</div>
-        <input class="add-input" id="add-${sec.key}" placeholder="New item…" onkeydown="if(event.key==='Enter')addItem('${sec.key}')">
-      </div></div></div>`;
+    html+=`<div class="add-row">
+      <div class="add-plus-icon" style="color:${s.color}">+</div>
+      <input class="add-input" id="add-${sec.key}" placeholder="New item…" onkeydown="if(event.key==='Enter')addItem('${sec.key}')">
+    </div></div></div>`;
   });
-
-  document.getElementById('packing-sections').innerHTML = html;
-  sections.forEach(s => updateTally(s.key));
-  updateProgress();
+  document.getElementById('packing-sections').innerHTML=html;
+  sections.forEach(s=>updateTally(s.key));
 }
 
-function toggle(id, secKey) {
-  checked.has(id) ? checked.delete(id) : checked.add(id);
-  const done = checked.has(id);
-  const s = SECTIONS[secKey];
-  const chk = document.getElementById('chk-'+id);
-  chk.className = 'rem-check'+(done?' done':'');
-  chk.style.background = done ? s.color : '';
-  chk.style.borderColor = done ? 'transparent' : s.color;
-  document.getElementById('lbl-'+id).className = 'rem-label'+(done?' done':'');
+function toggle(id,secKey) {
+  checked.has(id)?checked.delete(id):checked.add(id);
+  const done=checked.has(id);
+  const s=SECTIONS_META[secKey];
+  const chk=document.getElementById('chk-'+id);
+  chk.className='rem-check'+(done?' done':'');
+  chk.style.background=done?s.color:'';
+  chk.style.borderColor=done?'transparent':s.color;
+  document.getElementById('lbl-'+id).className='rem-label'+(done?' done':'');
   updateTally(secKey);
   updateProgress();
+  saveTripState();
 }
 
 function addItem(secKey) {
-  const input = document.getElementById('add-'+secKey);
-  const val = input.value.trim(); if (!val) return;
-  const id = `${secKey}-c${Date.now()}`;
+  const input=document.getElementById('add-'+secKey);
+  const val=input.value.trim(); if(!val) return;
+  const id=`${secKey}-c${Date.now()}`;
   allIds.push(id);
-  const card = document.getElementById('card-'+secKey);
-  const addRow = card.querySelector('.add-row');
-  const s = SECTIONS[secKey];
-  const el = document.createElement('div');
-  el.className = 'pack-row'; el.onclick = () => toggle(id, secKey);
-  el.innerHTML = `<div class="rem-check" id="chk-${id}" style="border-color:${s.color}"></div><div class="rem-label" id="lbl-${id}">${val}</div>`;
-  card.insertBefore(el, addRow);
-  input.value = '';
+  const card=document.getElementById('card-'+secKey);
+  const addRow=card.querySelector('.add-row');
+  const s=SECTIONS_META[secKey];
+  const el=document.createElement('div');
+  el.className='pack-row'; el.onclick=()=>toggle(id,secKey);
+  el.innerHTML=`<div class="rem-check" id="chk-${id}" style="border-color:${s.color}"></div><div class="rem-label" id="lbl-${id}">${val}</div>`;
+  card.insertBefore(el,addRow);
+  input.value='';
   updateTally(secKey);
   updateProgress();
+  saveTripState();
 }
 
 function updateTally(secKey) {
-  const items = allIds.filter(id => id.startsWith(secKey+'-'));
-  const done = items.filter(id => checked.has(id)).length;
-  const el = document.getElementById('tally-'+secKey);
-  if (el) el.textContent = done > 0 ? `${done}/${items.length}` : `${items.length}`;
+  const items=allIds.filter(id=>id.startsWith(secKey+'-'));
+  const done=items.filter(id=>checked.has(id)).length;
+  const el=document.getElementById('tally-'+secKey);
+  if(el) el.textContent=done>0?`${done}/${items.length}`:`${items.length}`;
 }
 
 function updateProgress() {
-  const total = allIds.length, done = checked.size;
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById('prog-fill').style.width = pct+'%';
-  document.getElementById('prog-pct').textContent = pct+'%';
+  const total=allIds.length, done=checked.size;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
 }
 
-function buildSections(nights, w, gym, swim, work) {
-  const n = nights;
-  const pants = Math.ceil(n/2);
-  const layers = w.cold || w.cool;
-
-  // Clothing — weather adaptive
-  const clothingItems = [
-    {name: w.hot ? 'Light t-shirts / tops' : 'T-shirts / tops', qty: n},
-    {name: 'Underwear', qty: n},
-    {name: 'Socks', qty: n},
+function buildSections(nights,w,gym,swim,work) {
+  const n=nights, pants=Math.ceil(n/2);
+  const clothingItems=[
+    {name:w.hot?'Light t-shirts / tops':'T-shirts / tops',qty:n},
+    {name:'Underwear',qty:n},{name:'Socks',qty:n},
   ];
-  if (w.hot || w.mild) {
-    clothingItems.push({name: 'Shorts or light trousers', qty: pants});
-  } else {
-    clothingItems.push({name: 'Trousers / jeans', qty: pants});
+  if(w.hot||w.mild) clothingItems.push({name:'Shorts or light trousers',qty:pants});
+  else clothingItems.push({name:'Trousers / jeans',qty:pants});
+  if(w.cold){clothingItems.push({name:'Warm coat'});clothingItems.push({name:'Jumper / fleece',qty:2});clothingItems.push({name:'Thermal underlayer'});clothingItems.push({name:'Scarf & gloves'});}
+  if(w.cool){clothingItems.push({name:'Hoodie or light jacket'});clothingItems.push({name:'Jumper / sweater'});}
+  if(w.mild) clothingItems.push({name:'Light jacket or cardigan'});
+  if(w.hot){clothingItems.push({name:'Sun hat / cap'});clothingItems.push({name:'Light layer for A/C'});}
+  if(w.hasRain&&!w.hasSnow) clothingItems.push({name:'Waterproof jacket / umbrella'});
+  if(w.hasSnow) clothingItems.push({name:'Waterproof coat'});
+  clothingItems.push({name:'Pyjamas / sleepwear'});
+  const footwearItems=[];
+  if(w.cold||w.hasSnow){footwearItems.push({name:'Warm waterproof boots'});footwearItems.push({name:'Casual shoes / sneakers'});}
+  else if(w.hot){footwearItems.push({name:'Sandals / flip-flops'});footwearItems.push({name:'Comfortable walking shoes'});}
+  else{footwearItems.push({name:'Comfortable walking shoes'});footwearItems.push({name:'Casual shoes / sneakers'});}
+  return [
+    {key:'essentials',items:[{name:'Passport / ID'},{name:'Wallet & cards'},{name:'Cash (local currency)'},{name:'Travel insurance docs'},{name:'Phone'},{name:'Reading glasses'},{name:'Sunglasses'},{name:'House keys'}]},
+    {key:'clothing',items:clothingItems},
+    {key:'footwear',items:footwearItems},
+    {key:'toiletries',items:[{name:'Toothbrush & toothpaste'},{name:'Deodorant'},{name:'Shampoo & shower gel'},{name:'Moisturiser / lip balm'},{name:'Razor & shaving cream'},{name:'Sunscreen'},{name:'Paracetamol / basic meds'},{name:'Plasters / first aid basics'}]},
+    {key:'tech',items:[{name:'Phone charger / cable'},{name:'Universal travel adapter'},{name:'Power bank'},{name:'Earphones / AirPods'}]},
+    ...(work?[{key:'work',items:[{name:'Work laptop'},{name:'Work phone'},{name:'Laptop charger'},{name:'USB-C hub / dongle'},{name:'Notebook & pen'}]}]:[]),
+    ...(gym?[{key:'gym',items:[{name:'Gym shoes'},{name:'Gym shorts / pants'},{name:'Gym shirts',qty:Math.max(1,Math.ceil(nights/2))},{name:'Sports socks'},{name:'Gym towel'},{name:'Gym card / membership app'}]}]:[]),
+    ...(swim?[{key:'swim',items:[{name:'Swim trunks / swimsuit'},{name:'Beach towel'},{name:'Goggles'},{name:'Flip-flops for pool'},...(w.hot?[{name:'Waterproof sunscreen'}]:[])]}]:[]),
+  ];
+}
+
+
+// ── Active trip persistence ──
+function saveActiveTripId(id) {
+  localStorage.setItem('travel-packer-active', id || '');
+}
+function loadActiveTripId() {
+  return localStorage.getItem('travel-packer-active') || null;
+}
+
+// Also save active ID whenever progress is saved
+const _origSave = saveTripState;
+saveTripState = function() { _origSave(); if (currentTripId) saveActiveTripId(currentTripId); };
+
+// Also save active ID when a new trip is created
+const _origAdd = addTripToHistory;
+addTripToHistory = function(trip) { _origAdd(trip); saveActiveTripId(trip.id); };
+
+// Clear active trip when user goes back to home (so home screen shows setup, not last trip, after it's finished)
+function clearActiveTrip() { localStorage.removeItem('travel-packer-active'); }
+
+// ── Init — restore last active trip on launch ──
+(function init() {
+  const activeId = loadActiveTripId();
+  if (activeId) {
+    const trip = loadHistory().find(t => t.id === activeId);
+    if (trip) {
+      currentTripId = trip.id;
+      selectedCity = trip.city;
+      selectedLat = trip.lat;
+      selectedLon = trip.lon;
+      navStack = ['setup', 'list'];
+      show('screen-list', trip.city, true, false);
+      document.getElementById('trip-title').textContent = trip.city;
+      document.getElementById('trip-meta').textContent = `${trip.depFmt} \u2013 ${trip.retFmt} \u00b7 ${trip.nights} night${trip.nights>1?'s':''} away`;
+      const sections = buildSections(trip.nights, trip.w, trip.gym, trip.swim, trip.work);
+      allIds = []; checked = new Set(trip.checked || []);
+      renderSections(sections);
+      document.getElementById('weather-tip-el').innerHTML = trip.weatherTip
+        ? `<div class="weather-tip">${trip.weatherTip}</div>` : '';
+      const weatherEl = document.getElementById('weather-section');
+      weatherEl.innerHTML = trip.weatherHtml || '';
+      weatherEl.style.display = trip.weatherHtml ? 'block' : 'none';
+      updateProgress();
+      return;
+    }
   }
-  if (w.cold)  { clothingItems.push({name: 'Warm coat'}); clothingItems.push({name: 'Jumper / fleece', qty: 2}); clothingItems.push({name: 'Thermal underlayer'}); clothingItems.push({name: 'Scarf & gloves'}); }
-  if (w.cool)  { clothingItems.push({name: 'Hoodie or light jacket'}); clothingItems.push({name: 'Jumper / sweater'}); }
-  if (w.mild)  { clothingItems.push({name: 'Light jacket or cardigan'}); }
-  if (w.hot)   { clothingItems.push({name: 'Sun hat / cap'}); clothingItems.push({name: 'Light breathable layers for A/C'}); }
-  if (w.hasRain && !w.hasSnow) { clothingItems.push({name: 'Waterproof jacket / compact umbrella'}); }
-  if (w.hasSnow) { clothingItems.push({name: 'Waterproof coat'}); }
-  clothingItems.push({name: 'Pyjamas / sleepwear'});
-
-  // Footwear — weather adaptive
-  const footwearItems = [];
-  if (w.cold || w.hasSnow) { footwearItems.push({name: 'Warm waterproof boots'}); footwearItems.push({name: 'Casual shoes / sneakers'}); }
-  else if (w.hot || w.beach) { footwearItems.push({name: 'Sandals / flip-flops'}); footwearItems.push({name: 'Comfortable walking shoes'}); }
-  else { footwearItems.push({name: 'Comfortable walking shoes'}); footwearItems.push({name: 'Casual shoes / sneakers'}); }
-
-  const sections = [
-    { key:'essentials', items:[
-      {name:'Passport / ID'},
-      {name:'Wallet & cards'},
-      {name:'Cash (local currency)'},
-      {name:'Travel insurance docs'},
-      {name:'Phone'},
-      {name:'Reading glasses'},
-      {name:'Sunglasses'},
-      {name:'House keys'},
-    ]},
-    { key:'clothing', items: clothingItems },
-    { key:'footwear', items: footwearItems },
-    { key:'toiletries', items:[
-      {name:'Toothbrush & toothpaste'},
-      {name:'Deodorant'},
-      {name:'Shampoo & shower gel'},
-      {name:'Moisturiser / lip balm'},
-      {name:'Razor & shaving cream'},
-      {name:'Sunscreen', ...(w.hot||w.mild ? {} : {})},
-      {name:'Paracetamol / basic meds'},
-      {name:'Plasters / first aid basics'},
-    ]},
-    { key:'tech', items:[
-      {name:'Phone charger / cable'},
-      {name:'Universal travel adapter'},
-      {name:'Power bank'},
-      {name:'Earphones / AirPods'},
-    ]},
-    ...(work ? [{ key:'work', items:[
-      {name:'Work laptop'},
-      {name:'Work phone'},
-      {name:'Laptop charger'},
-      {name:'USB-C hub / dongle'},
-      {name:'Notebook & pen'},
-    ]}] : []),
-    ...(gym ? [{ key:'gym', items:[
-      {name:'Gym shoes'},
-      {name:'Gym shorts / pants'},
-      {name:'Gym shirts', qty: Math.max(1, Math.ceil(nights/2))},
-      {name:'Sports socks'},
-      {name:'Gym towel'},
-      {name:'Gym card / membership app'},
-    ]}] : []),
-    ...(swim ? [{ key:'swim', items:[
-      {name:'Swim trunks / swimsuit'},
-      {name:'Beach towel'},
-      {name:'Goggles'},
-      {name:'Flip-flops for pool'},
-      ...(w.hot ? [{name:'Waterproof sunscreen'}] : []),
-    ]}] : []),
-  ];
-
-  return sections;
-}
+  renderRecent();
+})();
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
