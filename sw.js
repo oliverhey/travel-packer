@@ -1,4 +1,4 @@
-const CACHE = 'travel-packer-v1';
+const CACHE = 'travel-packer-v5';
 const ASSETS = [
   '/travel-packer/',
   '/travel-packer/index.html',
@@ -22,12 +22,11 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Always fetch weather and geocoding live
   if (e.request.url.includes('open-meteo.com')) {
     e.respondWith(fetch(e.request).catch(() => new Response('{}', {headers:{'Content-Type':'application/json'}})));
     return;
   }
-  // Network first, fall back to cache
+  // Network first — always try to get fresh content
   e.respondWith(
     fetch(e.request)
       .then(res => {
